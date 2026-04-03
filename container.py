@@ -4,7 +4,6 @@ from dal.repositories import PatientRepository, ExaminationRepository, ReportRep
 from bll.service import ExaminationService
 
 class Container(containers.DeclarativeContainer):
-    # Використовуємо Object, щоб передати сам клас SessionLocal як фабрику
     db_session = providers.Object(SessionLocal) 
 
     patient_repo = providers.Factory(PatientRepository, session_factory=db_session)
