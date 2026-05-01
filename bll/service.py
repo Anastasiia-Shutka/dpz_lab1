@@ -1,10 +1,11 @@
 from models.models import Patient, Examination, Report
 
 class ExaminationService:
-    def __init__(self, patient_repo, exam_repo, report_repo):
+    def __init__(self, patient_repo, exam_repo, report_repo, output_strategy):
         self.patient_repo = patient_repo
         self.exam_repo = exam_repo
         self.report_repo = report_repo
+        self.output_strategy = output_strategy 
 
     def process_csv(self, path: str):
         try:
@@ -29,10 +30,10 @@ class ExaminationService:
                 if count_added >= 100:
                     break
             
-            print(f"DONE: Added {count_added} rows")
+            self.output_strategy.log(f"DONE: Added {count_added} rows from {path}")
             return True
         except Exception as e:
-            print(f"Error: {e}")
+            self.output_strategy.log(f"Error during CSV processing: {e}")
             return False
         
     def get_all_patients(self):
